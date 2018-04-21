@@ -1,0 +1,15 @@
+Another problem with the study is that most ( or at least more ) people in the country very well might identify as Christian... Jyoshu, S1 don't know how they conducted the study. S1 don't know what questions they asked, or what they screening process was, or anything. S1  are just making up objections, and deciding without any factual evidence that they apply. Yes, that's the point. S1  had prefer to know the specifics. Questioning a study is a VERY appropriate thing to do in any study, particularly if it's used to vilify a group of people. So then question, don't just state that the study has a problem. And " vilify "? Good grief! Where did S1 get that from? S1 seem to be taking this a bit too much to heart. A study was done, and done well from all evidence that S2 have seen, and the results reported. No one is vilifying anyone. If S1 can show an actuall problem with the study, and not something hypothetical that S1 came up with, than please do so. It seems quite professionally done to me, but S1 go ahead and dig all S1 want. But if S1  are simply uncomfortable with the results, well, that ' s no reason to go around saying that people aren't doing their jobs or are out to vilify others. Er... that's why S1 pointed out the specific things S1 saw as a problem. Are S2 in a bit of a reactionary mood today? Yeah, because in S1's experience in these forums, here and elsewhere, an enormous amount of attention is given to trying to make Christianity look bad, through generalizations, citing irrelevant studies, and misrepresentations. See, the divorce rate of Christians has NO bearing whatsoever on the gay marriage amendment. Or did S2 forget that? No more than usual. You, however, are stating that some is a problem, as opposed to possibly a problem. As if S2 wanted to simply dismiss the results, rather than actually check their validity. That's pretty reactionary. As long as people say that they  are trying to protect the " sanctity " of marriage by keeping gays out it's extremely relevant, or at least a very good refutation.
+@highlight
+S1 argues that most people in the country might identify as Christian and that questioning a study is a very appropriate response to one that vilifies a group of people.
+@highlight
+They believe that there is a lot of attention given to trying to make Christianity look bad through generalization, irrelevant studies and misinterpretations.
+@highlight
+They believe the divorce rate of Christians has no bearing on the gay marriage amendment.
+@highlight
+S2 believes that S1 is making up objections and deciding without any factual evidence.
+@highlight
+He or she believes that objections should not be hypothetical, but actual proven ones.
+@highlight
+This person thinks that dismissing results, rather than checking validity is reactionary.
+@highlight
+This person thinks it is relevant as long as people say they are protecting the sanctity of marriage.
