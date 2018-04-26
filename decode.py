@@ -193,6 +193,10 @@ class BeamSearchDecoder(object):
 def print_results(article, abstract, decoded_output):
   """Prints the article, the reference summmary and the decoded summary to screen"""
   print("---------------------------------------------------------------------------")
+  print("Article -> ",article)
+  print("ref_sum -> ",abstract)
+  print("generated ->",decoded_output)
+
   tf.logging.info('ARTICLE:  %s', article)
   tf.logging.info('REFERENCE SUMMARY: %s', abstract)
   tf.logging.info('GENERATED SUMMARY: %s', decoded_output)
