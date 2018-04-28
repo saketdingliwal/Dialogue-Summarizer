@@ -189,6 +189,15 @@ replaced_by = {}
 replaced_by["aa"] = "agreed ."
 replaced_by["ba"] = "appreciated ."
 
+i_list = ["I","me"]
+i_list_poss = ["my"]
+you_list = ["you"]
+you_list_poss = ["your"]
+
+
+opp_speaker = {}
+opp_speaker["A"] = "B"
+opp_speaker["B"] = "A"
 
 def frame_ans(question_utter,dialogUtterance):
 	article = question_utter.speaker +  " asked"
@@ -230,6 +239,10 @@ for utterances in files_train:
 			for i in range(len(dialogUtterance.pos)):
 				posTag = dialogUtterance.pos[i]
 				next_pos = None
+				new_token = posTag.token
+				if not i==0 and ( dialogUtterance.pos[i-1].token.lower() == new_token.lower()) :
+					print (dialogUtterance.pos[i-1].token.lower()," ",new_token.lower())
+					continue
 				if not i == (len(dialogUtterance.pos)-1):
 					next_pos = dialogUtterance.pos[i+1]
 				if next_pos and "\'" in next_pos.token:
@@ -237,16 +250,21 @@ for utterances in files_train:
 					word += next_pos.token
 					if word.lower() in contractions:
 						word = contractions[word.lower()]
-						article.append(word)
-						continue
+						new_token = word
 					else:
 						word = posTag.token + " is"
-						article.append(word)
-						continue
-					continue
+						new_token = word
 				if posTag.pos=="UH" or posTag.pos=="," or "\'" in posTag.token:
 					continue
-				article.append(posTag.token)
+				if new_token.split()[0] in i_list:
+					new_token = dialogUtterance.speaker + " "+ ' '.join(new_token.split()[1:])
+				if new_token.split()[0] in i_list_poss:
+					new_token = dialogUtterance.speaker + "'s "
+				if new_token.split()[0] in you_list:
+					new_token = opp_speaker[dialogUtterance.speaker] +" " + ' '.join(new_token.split()[1:])
+				if new_token.split()[0] in you_list_poss:
+					new_token = opp_speaker[dialogUtterance.speaker] + "'s "
+				article.append(new_token)
 			lastspeaker = dialogUtterance.speaker
 	article = " ".join(article)
 	article_list.append(article)
