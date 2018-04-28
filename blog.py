@@ -1,64 +1,52 @@
 import json
 import re
 import nltk
-
-
-
-connectors = [['anyway'], ['like'], ['right'], ['you', 'know'], ['fine'], ['now'], ['so'], ['I', 'mean'], ['good'], ['oh'], ['well'], ['as', 'I', 'say'], ['great'], ['okay'], ['mind', 'you'], ['for', 'a', 'start']]
-
-# def get_connectors(sent):
-# 	global connectors
-# 	for conn in connectors:
-
-def cln_word(word):
-	if(word[-3:]=="\'ve"):
-		return [word[:-3], 'have']
-	elif(word[-2:]=="\'d"):
-		return [word[:-2], ' had']
-	elif(word[-2:]=="\'ll"):
-		return [word[:-2], ' will']
-	elif(word[-2:]=="\'m"):
-		return [word[:-2], ' is']
-	elif(word[-3:]=="\'re"):
-		return [word[:-3], ' are']
-	else:
-		return [word]
+from nltk.tokenize import sent_tokenize
+from nltk.tokenize import word_tokenize
+from nltk.corpus import words as eng_words
+import csv
 
 def getspe(word):
 	term = re.findall("\w*:", word)
 	return term[0][:-1]
 
+def cln_word(word):
+	punc = [',', '.', '?', '/', ';']
+	if(word[-1] in punc):
+		return [word[:-1], word[-1]]
+	else:
+		return [word]
+
 def getname(sent):
 	mid_sent = []
 	for word in sent.split():
-		mid_sent.extend(cln_word(word))
+		mid_sent.append(word)
 	
 	curr_name = "Someone"
 	other_name = "Someone"
 	for word in mid_sent:
 		arr = re.findall("\w*:\w*", word)
 		if(len(arr)==1):
-			curr_name = getspe(word)
 			other_name = curr_name
+			curr_name = getspe(word)
+			if(other_name!="Someone"):
+				break
 
-	
+	fnl_ans = []
 	new_sent = []
 	for word in mid_sent:
 		arr = re.findall("\w*:\w*", word)
 		if(len(arr)==1):
+			if(len(new_sent)>0):
+				for ele in (" ".join(new_sent)).split('.'):
+					if(len(ele.split())>0):
+						fnl_ans.append((curr_name, ele))
 			other_name = curr_name
 			curr_name = getspe(word)
-		elif(word=="I" or word=="i"):
-			new_sent.append(curr_name)
-		elif(word=="My" or word=="my"):
-			new_sent.append(curr_name + "\'s")
-		elif(word=="You" or word=="you"):
-			new_sent.append(other_name)
-		elif(word=="Your" or word=="your"):
-			new_sent.append(other_name + "\'s")
+			new_sent = []
 		else:
-			new_sent.append(word)
-	return " ".join(new_sent)
+			new_sent.extend(cln_word(word))
+	return fnl_ans
 
 def getsummary(sent):
 	words = sent.split()
@@ -73,27 +61,46 @@ def getsummary(sent):
 		ans.append(word)
 	return " ".join(ans)
 
+def pos_sent(tags):
+	ans = ""
+	for ele in tags:
+		ans += ele[0]
+		ans += "/"
+		ans += ele[1]
+		ans += " "
+	return " ".join(ans.split())
+
 corpus = json.load(open('blog_dataset/blog_data.json'))
 
 conv = []
 
 for ele in corpus:
-	full_sent = getname(ele["Dialog"])
-	print(full_sent)
+	full_data = getname(ele["Dialog"])
 	summ_sent = getsummary(ele["Summary"])
-	# print(summ_sent)
+
+	whole_data = []
+	for spea, senten in full_data:
+		tags = nltk.pos_tag(senten.split())
+		whole_data.append((spea, pos_sent(tags)))
+
+	full_sent = ""
+
 	for sent in summ_sent.split('.'):
 		if(len(sent.split())==0):
 			continue
 		full_sent += "\n@highlight\n" + " ".join(sent.split()) + '.'
-
-	# for ind_sent in full_sent.split('.'):
-	# 	tags = nltk.pos_tag(ind_sent.split())
-	conv.append(full_sent)
+	conv.append((whole_data, full_sent))
 
 for i, ele in enumerate(conv):
-	print(len(ele.split()))
+	# print(len(ele.split()))
 	filename = "folder/" + str(i) + ".story"
 	with open(filename, 'w') as writer:
-		print(ele)
-		writer.write(ele)
+		writer.write(ele[1])
+
+	myFile = open("folder/" + str(i) + ".csv", 'w', newline='')
+	with myFile:
+		fieldnames = ['speaker', 'pos']
+		writer = csv.DictWriter(myFile, fieldnames=fieldnames)
+		writer.writeheader()
+		for i, dia in enumerate(ele[0]):
+			writer.writerow({'speaker' : dia[0], 'pos' : dia[1]})
