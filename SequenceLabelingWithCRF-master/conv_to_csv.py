@@ -30,17 +30,21 @@ with open('cont.pickle', 'rb') as handle:
 
 data = []
 
-with open(sys.argv[1], 'r') as file:
-	abc = csv.DictReader(file, delimiter=":")
-	for row in abc:
-		new_sent = []
-		for ele in row['pos'].split():
-			new_sent.extend(cln_word(ele))
-		data.append((row['speaker'], " ".join(new_sent)))
+inputFolder = sys.argv[1]
+outputFolder = sys.argv[2]
 
-with open(sys.argv[2], 'w', newline='') as file:
-	fieldnames = ['speaker', 'pos']
-	writer = csv.DictWriter(file, fieldnames=fieldnames)
-	writer.writeheader()
-	for ele in data:
-		writer.writerow({'speaker': ele[0], 'pos': pos_tagged(ele[1])})
+for i in range(1):
+	with open(inputFolder + str(i) + ".csv", 'r') as file:
+		abc = csv.DictReader(file, delimiter=":")
+		for row in abc:
+			new_sent = []
+			for ele in row['pos'].split():
+				new_sent.extend(cln_word(ele))
+			data.append((row['speaker'], " ".join(new_sent)))
+
+	with open(outputFolder + str(i) + ".csv", 'w', newline='') as file:
+		fieldnames = ['speaker', 'pos']
+		writer = csv.DictWriter(file, fieldnames=fieldnames)
+		writer.writeheader()
+		for ele in data:
+			writer.writerow({'speaker': ele[0], 'pos': pos_tagged(ele[1])})
