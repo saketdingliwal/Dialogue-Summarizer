@@ -48,6 +48,8 @@ corpus = json.load(open(inputFile))
 lstno = []
 conv = []
 
+sent_with_id = []
+
 for ele in corpus["root"]["thread"]:
 	lstno.append(ele["listno"])
 	fnl_sent = []
@@ -58,9 +60,11 @@ for ele in corpus["root"]["thread"]:
 			for sent in email["Text"]["Sent"]:
 				ttl_len += len(clean_sent(sent["#text"]).split())
 				fnl_sent.append((name, clean_sent(sent["#text"])))
+				sent_with_id.append((sent["-id"], clean_sent(sent["#text"])))
 		else:
 			ttl_len += len(clean_sent(sent["#text"]).split())
 			fnl_sent.append((name, clean_sent(email["Text"]["Sent"]["#text"])))
+			sent_with_id.append((sent["-id"], clean_sent(email["Text"]["Sent"]["#text"])))
 	print(ttl_len)
 	conv.append(fnl_sent)
 
@@ -74,7 +78,9 @@ for i in range(len(lstno)):
 			temp_ele = ""
 			for sent in ele["annotation"][0]["summary"]["sent"]:
 				temp_ele += "\n@highlight\n"
-				temp_ele += sent["#text"]
+				for lin in sent_with_id:
+					if (lin[0]==sent["-link"]):
+						temp_ele += lin[1]
 			summ.append(temp_ele)
 			break
 
